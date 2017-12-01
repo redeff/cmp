@@ -74,7 +74,7 @@ public:
 
       // Volvemos a checkear los elementos cuyos vecinos cambiaron
       for(auto n : {nei[l].first, nei[l].second}) {
-        if(is_local_min(n, nei, ns)) {
+        if(n != 0 && n != ns.size() - 1 && is_local_min(n, nei, ns)) {
           local_mins.insert(n);
           cout << "la" << endl;
         }

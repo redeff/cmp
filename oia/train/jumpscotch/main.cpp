@@ -31,6 +31,9 @@ void move_tail() {
 }
 
 int main() {
+  // La idea es usar sliding-window rmq para hacer dinamica
+  // y ver en cada paso cual salto nos conviene: el que
+  // podemos llegar al final con menor suma
   cin >> n >> d;
   for(int i = 0; i < n; ++i) {
     ns.emplace_back();
