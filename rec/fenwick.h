@@ -16,7 +16,7 @@ class Fenwick {
 
   set(int index, T delta){
     for(int i = index; i < n; i += i & -i){
-      vals[i] = Op(vals[i])
-
+      vals[i] = Op(vals[i]);
+    }
   }
 }
