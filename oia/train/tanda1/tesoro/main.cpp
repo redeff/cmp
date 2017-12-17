@@ -81,6 +81,13 @@ int main() {
     }
   }
 
+  if(board[0][0] == 'P') {
+    ofs << "imposible" << endl;
+    return 0;
+  } else if (board[0][0] == 'W') {
+    f--;
+  }
+
   vector<State> curr;
   curr.emplace_back(Tile(0, 0), 0, f);
   vector<vector<State>> bests(n, vector<State>(m, State(Tile(0, 0), 33333333, -1))); 

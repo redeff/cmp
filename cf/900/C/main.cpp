@@ -30,7 +30,7 @@ int main(){
   if(n == 1) {
     cout << ns[0] << endl;
   } else {
-    int a, b; // Second biggest and biggest
+    int a, b; // Second biggest, and biggest
     vector<int> killers;
     vector<int> records;
     records.push_back(0);
@@ -72,7 +72,6 @@ int main(){
     });
 
     cout << ns[*it] << endl;
-
   }
 }
 

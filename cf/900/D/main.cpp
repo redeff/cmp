@@ -34,39 +34,7 @@ ll part(ll n) {
   return pow_2(n - 1);
 }
 
-ll gcd_1(ll y) {
-  if(dp.count(y) > 0){
-    return dp[y];
-  }
-  ll total = part(y);
-  for(ll d : divs) {
-    if(y % d == 0) {
-      total -= gcd_1(y / d);
-      total %= MOD;
-    }
-  }
-  total += MOD;
-  total %= MOD;
-  dp[y] = total;
-  return total;
-}
-
-ll gcd_x_y(ll x, ll y) {
-  if(y % x == 0) {
-    y = y / x;
-    for(int i = 2; i <= y / 2; ++i) {
-      if(y % i == 0) {
-        divs.push_back(i);
-      }
-    }
-    divs.push_back(y);
-    return gcd_1(y);
-  } else {
-    return 0;
-  }
-}
-
-ll don(ll y) {
+ll calculate(ll y) {
   vector<ll> primes;
   ll t = y;
   for(ll i = 2; i <= t; ++i) {
@@ -107,7 +75,7 @@ int main(){
   if(y % x != 0) {
     cout << 0 << endl;
   } else {
-    cout << don(y / x) << endl;
+    cout << calculate(y / x) << endl;
   }
 }
 
