@@ -1,6 +1,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+// Una posición en el BFS 3d, las posiciones (x, y) en el tablero,
+// y la z representa la cantidad de flechas que me queda
 struct Tile {
   int x;
   int y;
@@ -13,17 +15,6 @@ vector<Tile> neis = {Tile(0, 1, 0), Tile(0, -1, 0), Tile(1, 0, 0), Tile(-1, 0, 0
 bool in_bound(int n, int x) {
   return x >= 0 && x < n;
 }
-
-/*
-#define ifs cin
-#define ofs cout
-*/
-/*
-#define DBG(x) cerr << "(" << __LINE__ << ") " << #x << " = " << (x) << endl
-#define RAYA cerr << "=========================" << endl
-*/
-#define DBG(x)
-#define RAYA
 
 int main() {
   ifstream ifs;
@@ -40,14 +31,25 @@ int main() {
     }
   }
 
+  // Cuál es la posición previa a cada otra. Es para poder ir para atrás al
+  // final al decir el camino
   vector<vector<vector<Tile>>> from(n, vector<vector<Tile>>(m, vector<Tile>(f + 1, Tile(-1, -1, -1))));
+
+  // En cada iteración, cual es la máxima cantidad de flechas con la que conseguimos
+  // llegar a cada posición del tablero
   vector<vector<int>> max_flechas(n, vector<int>(m, -1));
 
   from[0][0][0] = Tile(-1, 0, f);
-  // max_flechas[0][0] = ;
 
+  // BFS
   vector<Tile> currs;
+
+  // Ponemos la posición inicial uno afuera del tablero, cosa
+  // que el BFS tenga que "entrar" al tablero y se fije si
+  // la posición inicial en sí es un pozo o un mounstro
   currs.push_back(Tile(-1, 0, f));
+
+  // Esto es para setearlo quendo encontramos el tesoro
   Tile final_pos = Tile(-1, -1, -1);
   while(!currs.empty()) {
     vector<Tile> ncurrs;
@@ -56,18 +58,22 @@ int main() {
         Tile n_pos = Tile(curr.x + nei.x, curr.y + nei.y, curr.z);
         if(in_bound(n, n_pos.x) && in_bound(m, n_pos.y)) {
           char what = board[n_pos.x][n_pos.y];
+          // Si es 'P' no hacemos nada
           if(what != 'P') {
             if(what == 'T') {
+              // Tenemos que decirle de donde vinimos
               from[n_pos.x][n_pos.y][n_pos.z] = curr;
               final_pos = n_pos;
               goto found;
             } else {
               if(what == 'W') {
+                // Si es un mounstro reducimos la cantidad de flechas
                 n_pos.z--;
               }
               if(n_pos.z > max_flechas[n_pos.x][n_pos.y]) {
                 max_flechas[n_pos.x][n_pos.y] = n_pos.z;
                 ncurrs.push_back(n_pos);
+                // Tenemos que decirle de donde vinimos
                 from[n_pos.x][n_pos.y][n_pos.z] = curr;
               }
             }
@@ -75,6 +81,7 @@ int main() {
         }
       }
     }
+    // move para que no se copie todo
     currs = move(ncurrs);
   }
   ofs << "imposible" << endl;
@@ -84,6 +91,7 @@ found:
   ;
   vector<Tile> poss;
   while(final_pos.x != -1) {
+    // Vamos buscando el camino para atrás
     poss.push_back(final_pos);
     final_pos = from[final_pos.x][final_pos.y][final_pos.z];
   }
