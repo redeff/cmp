@@ -2,12 +2,23 @@
 #define forn(i, n) for(int i = 0; i < int(n); ++i)
 using namespace std;
 
-vector<vector<int>> partition_arr(vector<int> arr, int d, int k, int m) {
+// Si se puede con suma maxima de paginas d, entonces
+// construye la particion optima con respecto al problema
+vector<vector<int>> get_partition(vector<int> arr, int d, int k, int m) {
   int taken = 0;
   vector<vector<int>> all;
   forn(i, k) {
     all.emplace_back();
     int curr = 0;
+
+    // Hacemos greedy del lado opuesto (el array lo
+    // invertimos al principio de testcase), cosa de que
+    // en vez de minimizar la cantidad de paginas del
+    // primer escriba, queramos minimizar las del ultimo,
+    // por lo que combiene tomar todas las posibles al principio
+    //
+    // La cota i - k + m es para que siempre queda al menos un libro
+    // para los escribas restantes
     while(taken <= i - k + m && curr <= d) {
       curr += arr[taken];
       all.back().emplace_back(arr[taken]);
@@ -22,7 +33,9 @@ vector<vector<int>> partition_arr(vector<int> arr, int d, int k, int m) {
   return all;
 }
 
-bool partition_can(vector<int> arr, int d, int k, int m) {
+// Casi lo mismo que la otra funcion, pero en vez de contruir
+// el ejemplo, chequea si se puede con d
+bool is_possible(vector<int> arr, int d, int k, int m) {
   int taken = 0;
   forn(i, k) {
     int curr = 0;
@@ -52,18 +65,22 @@ void testcase() {
 
   reverse(ps.begin(), ps.end());
 
+  // Hacemos busqueda binaria. Con d = sum siempre se puede
+  // (le damos todo a un escriba), y con d = 0 obvio que no
   int lo = 0;
   int hi = sum; // Can
 
   while(lo != hi - 1) {
     int mid = (lo + hi) / 2;
-    if(partition_can(ps, mid, k, m)) {
+    if(is_possible(ps, mid, k, m)) {
       hi = mid;
     } else {
       lo = mid;
     }
   }
-  auto res = partition_arr(ps, hi, k, m);
+  auto res = get_partition(ps, hi, k, m);
+
+  // Invertimos de nuevo (porque lo habíamos invertido antes)
   reverse(res.begin(), res.end());
   forn(i, res.size()) {
     reverse(res[i].begin(), res[i].end());

@@ -2,6 +2,7 @@
 using namespace std;
 typedef long long ll;
 
+// Functor para std::set
 struct CompareGaps {
   bool operator() (const pair<ll, ll>& a, const pair<ll, ll>& b) const {
     if(a.second - a.first == b.second - b.first) {
@@ -12,7 +13,12 @@ struct CompareGaps {
   }
 };
 
+// Estructura de datos que permite:
+//  * Insertar un entero en el rango [0, n]
+//  * Obtener el mayor `gap` entre enteros consecutivos
+//  de los que insertamos si los ordenamos 
 struct BiggestGap {
+  // Los gaps los ordenamos por tamaño
   set<pair<ll, ll>, CompareGaps> gaps;
   set<ll> points;
 
@@ -37,19 +43,11 @@ struct BiggestGap {
   }
 };
 
-/*
-ll main() {
-  auto gapper = BiggestGap(10);
-  cout << gapper.max_gap() << endl;
-  gapper.add_poll(5);
-  cout << gapper.max_gap() << endl;
-  gapper.add_poll(4);
-  cout << gapper.max_gap() << endl;
-  gapper.add_poll(7);
-  cout << gapper.max_gap() << endl;
-}
-*/
-
+// El área mas grande va a consistir claramente
+// en el rectángulo formado por el par de lineas verticales
+// más lejanas y el par de lineas horizontales mas lejanas
+// la distancia entre lineas paralelas las podemos interpretar
+// como `gaps` en nuestra estructura 
 void testcase() {
   ll n, m, q;
   cin >> n >> m >> q;
@@ -58,9 +56,8 @@ void testcase() {
   for(ll i = 0; i < q; ++i) {
     ll c, v;
     cin >> c >> v;
+    // Añadimos la linea a la estructura correspondiente
     (c == 0 ? x_gapper : y_gapper).add_point(v);
-    /*if(c == 0) x_gapper.add_point(v);
-    else y_gapper.add_point(v);*/
     cout << x_gapper.max_gap() * y_gapper.max_gap() << endl;
   }
 }

@@ -16,13 +16,16 @@ void testcase(int n) {
   vector<int> iot;
   forn(i, n) iot.push_back(i);
   forn(i, n) forn(j, i) {
-    // i > j, all possible pairs.
-    // Find all k such that k < j and ns[i], ns[j] and ns[k] dont form a trig
-    // Those are k < min(j, i - j)
-    // int bound = min(ns[j], ns[i] - ns[j]);
-    total += lower_bound(iot.begin(), iot.end(), ns[i] - ns[j], [&](int index, int val) {
+    // Queremos todos los pares (i, j, k) tal que ns[i] ns[j] ns[k] no formen un triangulo,
+    // y le daremos el orden erbitrario i > j > k => ns[i] >= ns[j] >= ns[k]
+    // Para que no se forme un triangulo, ns[k] < ns[i] - ns[j]
+    // Juntando las condiciones ns[k] < ns[i] - ns[j] y k < j, que particionan [0;n),
+    // podemos usar binary search para saber cuantos tales k hay
+    //
+    // iot es [0;n)
+    total += int(lower_bound(iot.begin(), iot.end(), ns[i] - ns[j], [&](int index, int val) { // (Index es k)
         return ns[index] < val && index < j;
-    }) - iot.begin();
+    }) - iot.begin());
   }
 
   cout << total << endl;
