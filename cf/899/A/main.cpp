@@ -1,5 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
+
 typedef long long int ll;
 
 #define forn(i, a, b) for(ll i = a; i < b; ++i)
@@ -17,6 +18,7 @@ vector<T> get_vector(ll size){
 }
 
 int main(){
+  cout << "7" << endl;
 
 }
 
