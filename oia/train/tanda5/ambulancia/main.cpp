@@ -5,8 +5,8 @@ typedef long long int ll;
 
 const ll INF = 33333333;
 
+// Devuleve la distancia de cada nodo a root
 vector<ll> dijkstra(vector<vector<pair<ll, ll>>> &adj, ll root) {
-
     ll n = ll(adj.size());
     vector<ll> dist(n, INF);
     dist[root] = 0;
@@ -17,16 +17,12 @@ vector<ll> dijkstra(vector<vector<pair<ll, ll>>> &adj, ll root) {
     dj.push({0, root});
 
     while(!dj.empty()) {
-
         ll nearest_node = dj.top().second;
         // cerr << nearest_node << endl;
         dj.pop();
         if(!visited[nearest_node]) {
-
             for(auto nei: adj[nearest_node]) {
-
                 if(dist[nearest_node] + nei.second < dist[nei.first]) {
-
                     // from[nei.first] = nearest_node;
                     dist[nei.first] = dist[nearest_node] + nei.second;
                     dj.push({dist[nei.first], nei.first});
@@ -40,6 +36,8 @@ vector<ll> dijkstra(vector<vector<pair<ll, ll>>> &adj, ll root) {
     return dist;
 }
 
+// Dado graph, que tiene que ser un dag, encuentra el número
+// de rutas entre a y e recursivamente y con dp
 ll get_ways(ll s, ll e, vector<vector<ll>> &graph) {
     ll n = ll(graph.size());
     auto dp = vector<ll>(n, -1);
@@ -100,16 +98,19 @@ int main() {
         adj[b].emplace_back(a, d);
     }
 
+    // Las sidtancias a S y a E
     auto dist_s = dijkstra(adj, s);
     auto dist_e = dijkstra(adj, e);
 
     vector<vector<ll>> graph(n);
     for(ll i = 0; i < n; ++i) {
-
         for(auto nei: adj[i]) {
-
             ll j = nei.first;
 
+            // A cada arista la pongo en graph si y solo si
+            // esa arista te acerca a E y te aleja de S, es claro
+            // que esto forma un dag (si siempre te acercas no puede
+            // haber un loop)
             if(dist_s[i] < dist_s[j] && dist_e[i] > dist_e[j]) {
                 graph[i].push_back(j);
             }

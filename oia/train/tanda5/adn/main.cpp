@@ -26,62 +26,25 @@ int main() {
     return 0;
   }
 
-  // dp[a][b] = edit_distance(ns[0:a], ms[0:b])
-  // vector<vector<int>> dp;
-
-  /*
-  for(int j = 0; j < m; ++j) {
-    for(int i = 0; i < n; ++i) {
-      int add_n;
-      if(dp[])
-      int add_m;
-      int mod;
-      dp[i][j] = min()
-    }
-  }
-  */
-  /*
-  for(int i = 0; i < k; ++i) {
-    dp[0][i] = i;
-  }
-
-  for(int x = 1; x <= n; ++x) {
-    for(int y = max(0, x - k - 1); y < x + k + 1; ++y) {
-      int add_n;
-      try {
-        add_n = dp.at(x - 1).at(y) + 1;
-      } catch (out_of_range) {
-        add_n = INF;
-      }
-
-      int add_m;
-      try {
-        add_m = dp.at(x).at(y - 1) + 1;
-      } catch (out_of_range) {
-        add_m = INF;
-      }
-
-      int mod;
-      try {
-        mod = dp.at(x - 1).at(y - 1) + ((ns.at(x - 1) == ms.at(y - 1)) ? 0 : 1);
-      } catch (out_of_range) {
-        mod = INF;
-      }
-
-      dp[x][y] = min(min(add_n, add_m), mod);
-    }
-    dp.erase(x - 1);
-  }
-  */
+  // Es el algoritmo estándar de edit_distance,
+  // solo observando los elementos k por encima y k por debajo
+  // de la diagonal principal de la matriz dp, ya que el resto de los
+  // elementos compara strigs de diferencia de longitud myor a k, entonces
+  // su edit distance es necesariamente mayor a k, y no nos importa
 
   int size = 2 * k + 1;
-  vector<int> a(size, INF);
 
+  // Para hacer dp, nesecesitamos el valor anterior de la sección de la
+  // columna que estábamos mirando, así como otro vector para ir guar-
+  // dando lo que calculamos en la columna actual
+  // Estos dos vectores son a y b, en algun orden. Los vamos cambiando
+  vector<int> a(size, INF);
   vector<int> b(size, INF);
   
   vector<int> * dp = &a;
   vector<int> * new_dp = &b;
 
+  // El caso base
   for(int i = 0; i <= k; ++i) {
     (*dp)[k + i] = i;
   }
@@ -112,9 +75,14 @@ int main() {
         mod = (*dp)[i] + ((ns[x] == ms[i + x - k]) ? 0 : 1);
       }
 
+      // Cansideramos las 3 posibilidades de la recirsión,
+      // añadir una letra, quitar una letra, o modificar una letra
+      // (dejarla igual cuenta como modificarla, pero cuesta 0)
+
       (*new_dp)[i] = min(mod, min(add_n, add_m));
     }
 
+    // cambiamos a y b de lugar
     auto tmp = dp;
     dp = new_dp;
     new_dp = tmp;

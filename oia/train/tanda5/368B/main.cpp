@@ -8,6 +8,9 @@ int main() {
     for(int i = 0; i < n; ++i) cin >> ns[i];
     unordered_set<int> dp;
     vector<int> ans(n);
+
+    // Vamos guardando en un set los numeros que ya vimos,
+    // y luego en and los tamaños de esos sets
     for(int i = n - 1; i >= 0; --i) {
         dp.insert(ns[i]);
         ans[i] = dp.size();
