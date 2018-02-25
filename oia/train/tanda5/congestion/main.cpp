@@ -1,130 +1,138 @@
 #include <bits/stdc++.h>
+#define forn(i, n) for(ll i = 0; i < int(n); ++i)
 using namespace std;
 
-const int INF = 3333333;
 typedef long long int ll;
-/*
-struct Edge {
-    int to;
-    int wei;
-    Edge(int to_, int wei_): to(to_), wei(wei_) {}
-};
-*/
+const int INF = 3333333;
 
-// return the distances for every pair of nodes
-vector<ll> dijkstra(int root, vector<unordered_map<int, ll>> &graph) {
-    int n = int(graph.size());
+// Devuelve es árbol de caminos mínimos
+vector<ll> dijkstra(ll root, vector<vector<pair<ll, ll>>> &graph) {
+    ll n = graph.size();
+    vector<ll> dist(n, INF);
+    vector<ll> from(n, -1);
+    dist[root] = 0;
 
-    vector<bool> visited(n, false);
-    vector<ll> dists(n, INF);
-    dists[root] = 0;
+    auto cmp = [&](ll a, ll b) { return dist[a] < dist[b]; };
+    set<ll, decltype(cmp)> node_set(cmp);
+    forn(i, n) node_set.insert(i);
 
-    priority_queue<pair<ll, int>> es;
-    es.emplace(0, root);
-    while(!es.empty()) {
-        int node = es.top().second;
-        es.pop();
-
-        if(!visited[node]) {
-            for(auto ed: graph[node]) {
-                if(dists[ed.first] > dists[node] + ed.second) {
-                    dists[ed.first] = dists[node] + ed.second;
-                    es.emplace(dists[ed.first], ed.first);
-                }
+    while(!node_set.empty()) {
+        ll mn = *node_set.begin();
+        node_set.erase(mn);
+        for(auto p : graph[mn]) {
+            ll new_d = p.second + dist[mn];
+            ll to = p.first;
+            if(new_d < dist[to]) {
+                node_set.erase(to);
+                dist[to] = new_d;
+                from[to] = mn;
+                node_set.insert(to);
             }
-            visited[node] = true;
         }
     }
 
-    return dists;
+    return from;
 }
 
-vector<ll> dp;
-ll get_size_subtree(int node, vector<unordered_set<int>> &dag) {
-    if(dp[node] != -1) return dp[node];
-    ll total = 1;
-    // for(int i = 0; i < tree[node].size(); ++i) {
-    for(auto ch: dag[node]) {
-        total += get_size_subtree(ch, dag);
+vector<ll> traff(ll root, vector<ll> tree) {
+    ll n = tree.size();
+    vector<vector<ll>> graph(n);
+    forn(i, n) {
+        if(tree[i] != -1) {
+            graph[tree[i]].push_back(i);
+        }
     }
-    dp[node] = total;
-    return total;
+
+    vector<ll> size_of_subtree(n, -1);
+
+    struct Entry {
+        ll i;
+        ll sum;
+        ll node;
+        Entry(ll i_, ll sum_, ll node_): i(i_), sum(sum_), node(node_) {}
+    };
+
+    stack<Entry> sk;
+    sk.emplace(0, 1, root);
+    while(!sk.empty()) {
+        if(sk.top().i >= ll(graph[sk.top().node].size())) {
+            size_of_subtree[sk.top().node] = sk.top().sum;
+            sk.pop();
+        } else if(size_of_subtree[graph[sk.top().node][sk.top().i]] != -1) {
+            sk.top().sum += size_of_subtree[graph[sk.top().node][sk.top().i]];
+            sk.top().i++;
+        } else {
+            sk.emplace(0, 1, graph[sk.top().node][sk.top().i]);
+        }
+    }
+
+    /*
+    vector<ll> out(n);
+    forn(i, n) {
+        for(ll t : graph[n]) {
+            out[t] = size_of_subtree[t];
+        }
+    }
+    */
+    return size_of_subtree;
 }
 
 #define ifs cin
 #define ofs cout
+
 int main() {
     ifstream ifs("congestion.in");
     ofstream ofs("congestion.out");
-    int m, n;
-    cin >> n >> m; 
 
-    vector<unordered_map<int, ll>> graph(n);
-    vector<unordered_map<int, pair<int, ll>>> indices(n);
+    ll n, m;
+    cin >> n >> m;
 
-    struct Edge {
-        int from;
-        int to;
-        int len;
-        int id;
-        Edge(int from_, int to_, int len_, int id_): from(from_), to(to_), len(len_), id(id_) {}
-    };
+    vector<vector<ll>> weis(n, vector<ll>(n, INF));
+    vector<vector<ll>> indx(n, vector<ll>(n, -1));
+    vector<vector<ll>> total(n, vector<ll>(n, 0));
 
-    vector<Edge> edges;
-    // vector<map<int, int>> indices(n);
-    // vector<int> total(m, 0);
-    vector<unordered_map<int, ll>> total(n);
-    for(int i = 0; i < m; ++i) {
-        int a, b, d;
+    forn(i, m) {
+        ll a, b, d;
         cin >> a >> b >> d;
-        a--; b--;
-
-        // cerr << a << " " << b;
-
-        // graph[a].emplace_back(b, d);
-        if(indices[a].count(b) == 0 || indices[a][b].second > d) {
-            graph[a][b] = d;
-            indices[a][b] = {i, d};
+        a--;b--;
+        if(weis[a][b] > d) {
+            weis[a][b] = d;
+            indx[a][b] = i;
         }
-        edges.emplace_back(a, b, d, i);
     }
 
-    for(int root = 0; root < n; ++root) {
-        auto dists = dijkstra(root, graph);
-        vector<unordered_set<int>> dag(n);
-        /*
-        for(int i = 0; i < n; ++i) {
-            if(i != root) {
-                dag[from[i]].push_back(i);
-            } else if(from[i] != -1) assert(false); 
+    // Adjacency list, de nodes, weis
+    vector<vector<pair<ll, ll>>> graph(n);
+    forn(i, n) forn(j, n) {
+        if(weis[i][j] != INF) {
+            graph[i].emplace_back(j, weis[i][j]);
         }
-        */
-        dp = vector<ll>(n, -1);
+    }
 
-        for(auto e : edges) {
-            if(dists[e.from] + e.len == dists[e.to]) {
-                dag[e.from].insert(e.to);
-            }
-        }
+    forn(i, n) {
+        vector<ll> tree = dijkstra(i, graph);
+        vector<ll> size_of_subtree = traff(i, tree);
 
-        for(int i = 0; i < n; ++i) {
-            for(auto ch: dag[i]) {
-                total[i][ch] += get_size_subtree(ch, dag);
+        forn(j, n) {
+            if(tree[j] != -1) {
+                total[tree[j]][j] += size_of_subtree[j];
             }
         }
     }
-    // int mx = *max_element(total.begin(), total.end());
-    ll mx = -INF;
-    for(int i = 0; i < n; ++i) for(auto t : total[i]) mx = max(mx, t.second);
-    vector<int> mxs;
-    for(int i = 0; i < m; ++i) {
-        // if(total[i] == mx) mxs.push_back(i);
-        if(total[edges[i].from][edges[i].to] == mx && edges[i].len == graph[edges[i].from][edges[i].to]) {
-            mxs.push_back(i);
-        }
+
+    ll mx = 0;
+    forn(i, n) forn(j, n) {
+        mx = max(mx, total[i][j]);
     }
+
+    vector<ll> mxs;
+    forn(i, n) forn(j, n) {
+        if(total[i][j] == mx) mxs.push_back(indx[i][j]);
+    }
+
+    sort(mxs.begin(), mxs.end());
 
     cout << mxs.size() << " " << mx << endl;
-    for(auto i: mxs) cout << i + 1 << " ";
+    for(ll id : mxs) cout << id + 1 << " ";
     cout << endl;
 }
