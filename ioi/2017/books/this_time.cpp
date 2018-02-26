@@ -229,7 +229,7 @@ void recursive(vector<int> ns, vector<pair<int, int>> &out) {
 }
 
 int main() {
-    vector<int> rec = {1000, 40, 1000, 40, 50, 50, 40, 50};
+    // vector<int> rec = {1000, 40, 1000, 40, 50, 50, 40, 50};
     // vector<int> rec = {10, 20, 0, 10, 20};
     // vector<int> rec = {10, 10, 10, 10, 10, 101};
     // vector<int> rec = {10, 20, 30, 30, 20, 10};
@@ -240,6 +240,7 @@ int main() {
     // vector<int> rec = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17};
     // vector<int> rec = {3, 0, 1, 1, 1, 2, 1, 0, 0, 0,  3,  3,  0,  4,  5,  5,  5,  4};
     // vector<int> rec = {10, 1000, 1000, 1000, 10};
+    vector<int> rec = {1, 1, 1, 1};
     vector<pair<int, int>> result;
     recursive(rec, result);
 
