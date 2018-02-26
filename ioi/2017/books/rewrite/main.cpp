@@ -21,11 +21,58 @@ struct Range {
     }
 }
 
+void set_cyc(Node* a, Node* b) {
+    a->nxt_cyc = b;
+    b->prv_cyc = a;
+}
+
+void fuse(Node *a, Node *b) {
+    Range as(a, a->nxt_cyc);
+
+    Node* bs[4];
+    bs[0] = b;
+    for(int i = 1; i < 4; ++i) {
+        bs[i] = bs[i - 1]->nxt_cyc;
+    }
+
+    for(int i = 0; i < 4; ++i) {
+        if(bs[i] == as.b || bs[i] == as.e) return;
+    }
+
+    for(int i = 1; i < 4; ++i) {
+        if(as.contains(bs[i - 1]) != as.contains(bs[i])) return;
+    }
+
+    for(int i = 1; i < 4; ++i) {
+        if(as.contains(bs[i]) != Range(bs[i - 1], bs[i]).contains(a.b)) {
+            /*
+            as.b->nxt_cyc = bs[i];
+            bs[i]->prv_cyc = as.b;
+            */
+            set_cyc(as.b, bs[i]);
+
+            /*
+            as.e->prv_cyc = bs[i - 1];
+            bs[i - 1]->nxt_cyc = as.e;
+            */
+            set_cyc(bs[i - 1], as.e);
+
+            return;
+        }
+    }
+
+    // Don't ask
+    set_cyc(bs[0], bs[2]);
+    set_cyc(bs[2], as.e);
+
+    set_cyc(as.b, bs[1]);
+    set_cyc(bs[1], bs[3]);
+}
+
 void doit(Node *start) {
-    int n = start->prv -> index - start->index;
+    int n = start->prv->index - start->index;
 
     auto len = [&](Range r) {
-
         int ix_b = r.b->index;
         int ix_e = r.e->index;
         if(ix_b < ix_e) return ix_e - ix_b;
@@ -38,6 +85,63 @@ void doit(Node *start) {
         big = sml;
         sml = tmp;
     }
+
+    vector<Node*> big_cyc;
+    vector<Node*> sml_cyc;
+
+    for(Node* i = sml.b; i != sml.e->nxt; i = i->nxt) {
+        if(big.contains(i->prv_cyc)) {
+            big_cyc.push_back(i->prv_cyc);
+            sml_cyc.push_back(i);
+
+            Node* go_back = i;
+            while(sml.contains(go_back->nxt_cyc)) go_back = go_back->nxt_cyc;
+
+            set_cyc(i->prv_cyc, go_back->nxt_cyc);
+            /*
+            i->prv_cyc->nxt_cyc = go_back->nxt_cyc;
+            go_back->nxt_cyc->prv_cyc = i->prv_cyc;
+            */
+
+            set_cyc(go_back, i);
+            /*
+            i->prv_cyc = go_back;
+            go_back->nxt_cyc = i;
+            */
+        }
+    }
+
+    for(int i = 1; i < big_cyc.size(); ++i) {
+        fuse(big_cyc[i - 1], big_cyc[i]);
+    }
+
+    for(int i = 1; i < sml_cyc.size(); ++i) {
+        fuse(sml_cyc[i - 1], sml_cyc[i]);
+    }
+
+    big.e->nxt = big.b;
+    big.b->prv = big.e;
+
+    sml.e->nxt = sml.b;
+    sml.b->prv = sml.e;
+
+    doit(sml.b);
+    doit(big.b);
+
+    
+    big.e->nxt = sml.b;
+    big.b->prv = sml.e;
+
+    sml.e->nxt = big.b;
+    sml.b->prv = big.e;
+
+    Node* nxt_big = big.b->nxt_cyc;
+    Node* nxt_sml = sml.b->nxt_cyc;
+
+    set_cyc(big.b, nxt_sml);
+    set_cyc(sml.b, nxt_big);
+
+    /*
 
     vector<Node*> come;
     vector<Node*> go;
@@ -63,6 +167,7 @@ void doit(Node *start) {
 
     doit(sml.b);
     doit(big.b);
+    */
 
     /*
     auto len = [&](Range r) {
