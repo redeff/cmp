@@ -1,0 +1,88 @@
+In file included from test.cpp:1:0:
+seg_tree.h: In instantiation of ‘void SegTree<Ix, Data, Func, Reduce, Apply, Compose>::st(Ix, Ix, Func) [with Ix = int; Data = int; Func = int; Reduce = Plus; Apply = Times; Compose = Times]’:
+test.cpp:21:18:   required from here
+seg_tree.h:67:20: error: no matching function for call to ‘Times::Times(int&, int&)’
+                 op = Compose(op, f);
+                    ^
+test.cpp:7:8: note: candidate: constexpr Times::Times()
+ struct Times {
+        ^
+test.cpp:7:8: note:   candidate expects 0 arguments, 2 provided
+test.cpp:7:8: note: candidate: constexpr Times::Times(const Times&)
+test.cpp:7:8: note:   candidate expects 1 argument, 2 provided
+test.cpp:7:8: note: candidate: constexpr Times::Times(Times&&)
+test.cpp:7:8: note:   candidate expects 1 argument, 2 provided
+In file included from test.cpp:1:0:
+seg_tree.h:73:26: error: no matching function for call to ‘Times::Times(int&, int&)’
+                 left->op = Compose(left->op, op);
+                          ^
+test.cpp:7:8: note: candidate: constexpr Times::Times()
+ struct Times {
+        ^
+test.cpp:7:8: note:   candidate expects 0 arguments, 2 provided
+test.cpp:7:8: note: candidate: constexpr Times::Times(const Times&)
+test.cpp:7:8: note:   candidate expects 1 argument, 2 provided
+test.cpp:7:8: note: candidate: constexpr Times::Times(Times&&)
+test.cpp:7:8: note:   candidate expects 1 argument, 2 provided
+In file included from test.cpp:1:0:
+seg_tree.h:74:27: error: no matching function for call to ‘Times::Times(int&, int&)’
+                 right->op = Compose(right->op, op);
+                           ^
+test.cpp:7:8: note: candidate: constexpr Times::Times()
+ struct Times {
+        ^
+test.cpp:7:8: note:   candidate expects 0 arguments, 2 provided
+test.cpp:7:8: note: candidate: constexpr Times::Times(const Times&)
+test.cpp:7:8: note:   candidate expects 1 argument, 2 provided
+test.cpp:7:8: note: candidate: constexpr Times::Times(Times&&)
+test.cpp:7:8: note:   candidate expects 1 argument, 2 provided
+In file included from test.cpp:1:0:
+seg_tree.h:80:21: error: no matching function for call to ‘Times::Times(int&, int&)’
+                 val = Reduce(
+                     ^
+test.cpp:7:8: note: candidate: constexpr Times::Times()
+ struct Times {
+        ^
+test.cpp:7:8: note:   candidate expects 0 arguments, 2 provided
+test.cpp:7:8: note: candidate: constexpr Times::Times(const Times&)
+test.cpp:7:8: note:   candidate expects 1 argument, 2 provided
+test.cpp:7:8: note: candidate: constexpr Times::Times(Times&&)
+test.cpp:7:8: note:   candidate expects 1 argument, 2 provided
+In file included from test.cpp:1:0:
+seg_tree.h:80:21: error: no matching function for call to ‘Times::Times(int&, int&)’
+                 val = Reduce(
+                     ^
+test.cpp:7:8: note: candidate: constexpr Times::Times()
+ struct Times {
+        ^
+test.cpp:7:8: note:   candidate expects 0 arguments, 2 provided
+test.cpp:7:8: note: candidate: constexpr Times::Times(const Times&)
+test.cpp:7:8: note:   candidate expects 1 argument, 2 provided
+test.cpp:7:8: note: candidate: constexpr Times::Times(Times&&)
+test.cpp:7:8: note:   candidate expects 1 argument, 2 provided
+In file included from test.cpp:1:0:
+seg_tree.h: In instantiation of ‘Data SegTree<Ix, Data, Func, Reduce, Apply, Compose>::gt(Ix, Ix) [with Ix = int; Data = int; Func = int; Reduce = Plus; Apply = Times; Compose = Times]’:
+test.cpp:22:28:   required from here
+seg_tree.h:51:37: error: no matching function for call to ‘Times::Times(int&, int&)’
+                 return Apply(val, op);
+                                     ^
+test.cpp:7:8: note: candidate: constexpr Times::Times()
+ struct Times {
+        ^
+test.cpp:7:8: note:   candidate expects 0 arguments, 2 provided
+test.cpp:7:8: note: candidate: constexpr Times::Times(const Times&)
+test.cpp:7:8: note:   candidate expects 1 argument, 2 provided
+test.cpp:7:8: note: candidate: constexpr Times::Times(Times&&)
+test.cpp:7:8: note:   candidate expects 1 argument, 2 provided
+In file included from test.cpp:1:0:
+seg_tree.h:60:27: error: no matching function for call to ‘Plus::Plus(int, int)’
+                         op);
+                           ^
+test.cpp:13:8: note: candidate: constexpr Plus::Plus()
+ struct Plus {
+        ^
+test.cpp:13:8: note:   candidate expects 0 arguments, 2 provided
+test.cpp:13:8: note: candidate: constexpr Plus::Plus(const Plus&)
+test.cpp:13:8: note:   candidate expects 1 argument, 2 provided
+test.cpp:13:8: note: candidate: constexpr Plus::Plus(Plus&&)
+test.cpp:13:8: note:   candidate expects 1 argument, 2 provided

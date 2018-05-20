@@ -17,6 +17,7 @@ vector<T> get_vector(ll size){
 }
 
 int main(){
+    return 0;
   ll n, k;
   cin >> n >> k;
   ll s = 0;

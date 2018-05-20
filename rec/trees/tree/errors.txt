@@ -1,0 +1,40 @@
+In file included from test.cpp:2:0:
+seg_tree.h: In constructor ‘SegTree<Ix, Data, Func, A, R, C>::SegTree(Ix, Data, Data, Func, A, R, C)’:
+seg_tree.h:78:89: warning: declaration of ‘compose’ shadows a member of ‘SegTree<Ix, Data, Func, A, R, C>’ [-Wshadow]
+         SegTree(Ix nsize, Data init, Data nzero, Func nid, A apply, R reduce, C compose): apply(apply), reduce(reduce), compose(compose) {
+                                                                                         ^
+seg_tree.h:75:11: note: shadowed declaration is here
+         C compose;
+           ^
+seg_tree.h:78:89: warning: declaration of ‘reduce’ shadows a member of ‘SegTree<Ix, Data, Func, A, R, C>’ [-Wshadow]
+         SegTree(Ix nsize, Data init, Data nzero, Func nid, A apply, R reduce, C compose): apply(apply), reduce(reduce), compose(compose) {
+                                                                                         ^
+seg_tree.h:74:11: note: shadowed declaration is here
+         R reduce;
+           ^
+seg_tree.h:78:89: warning: declaration of ‘apply’ shadows a member of ‘SegTree<Ix, Data, Func, A, R, C>’ [-Wshadow]
+         SegTree(Ix nsize, Data init, Data nzero, Func nid, A apply, R reduce, C compose): apply(apply), reduce(reduce), compose(compose) {
+                                                                                         ^
+seg_tree.h:73:11: note: shadowed declaration is here
+         A apply;
+           ^
+seg_tree.h: In instantiation of ‘SegTree<Ix, Data, Func, A, R, C>::SegTree(Ix, Data, Data, Func, A, R, C) [with Ix = int; Data = Data; Func = Func; A = main()::<lambda(Data, Func)>; R = main()::<lambda(Data, Data)>; C = main()::<lambda(Func, Func)>]’:
+test.cpp:43:146:   required from here
+seg_tree.h:78:9: warning: declaration of ‘compose’ shadows a member of ‘SegTree<int, Data, Func, main()::<lambda(Data, Func)>, main()::<lambda(Data, Data)>, main()::<lambda(Func, Func)> >’ [-Wshadow]
+         SegTree(Ix nsize, Data init, Data nzero, Func nid, A apply, R reduce, C compose): apply(apply), reduce(reduce), compose(compose) {
+         ^
+seg_tree.h:75:11: note: shadowed declaration is here
+         C compose;
+           ^
+seg_tree.h:78:9: warning: declaration of ‘reduce’ shadows a member of ‘SegTree<int, Data, Func, main()::<lambda(Data, Func)>, main()::<lambda(Data, Data)>, main()::<lambda(Func, Func)> >’ [-Wshadow]
+         SegTree(Ix nsize, Data init, Data nzero, Func nid, A apply, R reduce, C compose): apply(apply), reduce(reduce), compose(compose) {
+         ^
+seg_tree.h:74:11: note: shadowed declaration is here
+         R reduce;
+           ^
+seg_tree.h:78:9: warning: declaration of ‘apply’ shadows a member of ‘SegTree<int, Data, Func, main()::<lambda(Data, Func)>, main()::<lambda(Data, Data)>, main()::<lambda(Func, Func)> >’ [-Wshadow]
+         SegTree(Ix nsize, Data init, Data nzero, Func nid, A apply, R reduce, C compose): apply(apply), reduce(reduce), compose(compose) {
+         ^
+seg_tree.h:73:11: note: shadowed declaration is here
+         A apply;
+           ^

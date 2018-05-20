@@ -267,14 +267,28 @@ long long int minimum_walk(vector<int> nexts, int start) {
     int lo = colors[color[start]].mn;
     int hi = colors[color[start]].mx;
     int total = 0;
+    int since_last = 0;
     while(true) {
         // cerr << lo << " " << hi << endl;
         if(lo <= lob && hi >= hib) break;
-        if(lo > lob) lo--;
-        if(hi < hib) hi++;
-        total++;
-        lo = min(colors[color[lo]].mn, colors[color[hi]].mn);
-        hi = max(colors[color[lo]].mx, colors[color[hi]].mx);
+        if(lo > lob) lo--, total++;
+        if(hi < hib) hi++, total++;
+        since_last++;
+        lo = colors[color[lo]].mn;
+        hi = colors[color[hi]].mx;
+        if(colors[color[hi]].mn <= lo) {
+            lo = colors[color[hi]].mn; 
+            total -= since_last;
+            since_last = 0;
+        }
+
+        if(colors[color[lo]].mx >= hi) {
+            hi = colors[color[lo]].mx; 
+            total -= since_last;
+            since_last = 0;
+        }
+        // lo = min(colors[color[lo]].mn, colors[color[hi]].mn);
+        // hi = max(colors[color[lo]].mx, colors[color[hi]].mx);
     }
 
     long long int sum_cycles = 0;

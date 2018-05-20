@@ -3,12 +3,12 @@ require 'timeout'
 tim = 0
 1000000.times do 
     tim += 1
-    n = 500
+    n = 5000
     a = Array (0..n - 1)
     a = a.shuffle
     
-    # s = rand n
-    s = 0
+    s = rand n
+    # s = 0
 
     inp = "#{n} #{s} \n"
     a.each do |x|
@@ -41,7 +41,7 @@ tim = 0
     ans_old = `echo "#{inp}" | ./old`
 
     if ans_prog != ans_old
-        # puts inp
+        puts inp
     end
 
     # if ans_prog != ans_old
@@ -53,9 +53,9 @@ tim = 0
     #     puts "#{ans_prog} #{ans_old}"
     # end
 
-    # if tim % 100 == 0
+    if tim % 100 == 0
         puts "completed #{tim}"
-    # end
+    end
 end
 
 
