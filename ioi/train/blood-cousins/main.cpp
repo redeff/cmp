@@ -44,6 +44,10 @@ int main() {
         levels[ns[i].depth].push_back(i);
     }
 
+    for(int i = 0; i <= n; ++i) {
+        sort(levels[i].begin(), levels[i].end(), [&](int a, int b) {return ns[a].hi < ns[b].hi;});
+    }
+
     // --------------
 
     int m;
