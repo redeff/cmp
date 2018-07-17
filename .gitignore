@@ -1,4 +1,10 @@
+*
+!*.*
+!*/
+
+statement/
+
 *~
 *.swp
 prog
-
+a.out

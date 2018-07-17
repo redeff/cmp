@@ -43,7 +43,7 @@ int solitario(vector<int> c, long long N, int K) {
     if(c.empty()) return -1;
     k = K + 1;
     km = K;
-    ll r = solve(N) % N;
+    ll r = (K == 0) ? (N - 1) : (solve(N) % N);
     r = N - 1 - r;
     r %= (ll) c.size();
     r += (ll) c.size();
