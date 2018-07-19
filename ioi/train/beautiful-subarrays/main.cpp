@@ -86,6 +86,9 @@ ll less_than_k(vector<Num> as, ll k) {
 }
 
 int main() {
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+
 	ll n; ll k;
 	cin >> n >> k;
 	vector<Num> as(n + 1);
@@ -105,5 +108,5 @@ int main() {
 	l /= 2ll;
 	ll m = (n*(n+1ll))/2ll - l;
 	
-	cout << m << endl;
+	cout << m << "\n";
 }
