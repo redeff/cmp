@@ -1,0 +1,6 @@
+[package]
+name = "crg"
+version = "0.1.0"
+authors = ["redeff <14carlosoto@gmail.com>"]
+
+[dependencies]
