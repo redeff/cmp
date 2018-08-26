@@ -8,3 +8,5 @@ statement/
 *.swp
 prog
 *.out*
+*.o
+*.hi

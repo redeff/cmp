@@ -4,31 +4,25 @@ using namespace std;
 typedef long long int ll;
 const ll MOD = 1'000'000'007;
 
-bool bounded_dfs(int &bound, int node, int from, vector<unordered_set<int>> &tree) {
-    bound--;
-    if(bound <= 0) return false;
+int bounded_dfs(int bound, int node, int from, vector<unordered_set<int>> &tree) {
+    if(bound <= 1) return bound;
+    int size = 1;
     for(auto ch : tree[node]) {
         if(ch != from) {
-            if(!dfs(bound, ch, node, tree)) return false;
+            size += bounded_dfs(bound - size, ch, node, tree);
         }
     }
 
-    return true;
+    return size;
 }
 
 int smallest(int u, int v, vector<unordered_set<int>> &tree) {
     tree[u].erase(v);
     tree[v].erase(u);
-    atomic<int> res = {-1};
-    thread ut(dfs, &res, true, u, -1, &tree);
-    thread vt(dfs, &res, true, v, -1, &tree);
-    ut.join();
-    vt.join();
-    for(int k = 0; true; k *= 2) {
-        bool a = bounded_dfs(k, )
+    for(int k = 1; true; k *= 2) {
+        if(k > bounded_dfs(k, u, -1, tree)) return u;
+        if(k > bounded_dfs(k, v, -1, tree)) return v;
     }
-
-    return res.load();
 }
 
 struct Island {
