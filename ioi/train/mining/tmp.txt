@@ -1,0 +1,27 @@
+main.cpp: In lambda function:
+main.cpp:36:16: error: ‘out’ was not declared in this scope
+         return out;
+                ^~~
+main.cpp:36:16: note: suggested alternative: ‘putw’
+         return out;
+                ^~~
+                putw
+main.cpp: In function ‘std::pair<int, int> biconex(std::vector<std::vector<int> >&)’:
+main.cpp:37:5: error: conversion from ‘biconex(std::vector<std::vector<int> >&)::<lambda(int, int)>’ to non-scalar type ‘std::function<int(int, int)>’ requested
+     };
+     ^
+main.cpp:46:12: error: ‘blocked’ was not declared in this scope
+     seen = blocked;
+            ^~~~~~~
+main.cpp:46:12: note: suggested alternative: ‘block’
+     seen = blocked;
+            ^~~~~~~
+            block
+main.cpp: In lambda function:
+main.cpp:56:34: error: request for member ‘to’ in ‘ch’, which is of non-class type ‘int’
+                 Ret2 t = dfs2(ch.to);
+                                  ^~
+main.cpp: In function ‘std::pair<int, int> biconex(std::vector<std::vector<int> >&)’:
+main.cpp:63:5: error: conversion from ‘biconex(std::vector<std::vector<int> >&)::<lambda(int)>’ to non-scalar type ‘std::function<biconex(std::vector<std::vector<int> >&)::Ret2(int, int)>’ requested
+     };
+     ^
