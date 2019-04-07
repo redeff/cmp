@@ -1,6 +1,6 @@
 itp :: [Int] -> [Int]
 itp (a:b:xs) = (a + b) : (itn (b:xs))
-itp _ = [] 
+itp _ = []
 
 itn :: [Int] -> [Int]
 itn (a:b:xs) = (a - b) : (itp (b:xs))
