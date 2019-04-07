@@ -1,75 +1,36 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-struct Sumo {
-  int a, b, c;
-  int i;
-
-  Sumo(int a, int b, int i):
-    a(a),
-    b(b),
-    i(i)
-  {}
-
-  Sumo reverse() {
-    return Sumo(b, a, n, i);
-  }
-}
+typedef long long int ll;
+#define cin cina
+#define cout couta
 
 int main() {
-  int n;
-  cin >> n;
-  vector<Sumo> sumos(n, Sumo(0, 0, 0, 0));
-  for(int i = 0; i < n; ++i){
-    cin >> sumos[i].a >> sumos[i].b;
-    sumos[i].i = i;
-  }
+	ifstream cin("sumo.in");
+	ofstream cout("sumo.out");
+	ll n;
+	cin >> n;
+	vector<pair<ll, ll>> ns(n);
+	for(auto &p : ns) cin >> p.first >> p.second;
 
-  vector<Sumo> sorted_a = sumos;
-  sort(sorted_a.begin(), sorted_a.begin(), [](Sumo s1, Sumo s2){
-    if(s1.a < s2.a){
-      return true;
-    } else if(s1.a > s2.a) {
-      return false;
-    } else {
-      return s1.b < s2.b;
-    }
-  });
+	vector<int> ord(n);
+	iota(ord.begin(), ord.end(), 0);
+	sort(ord.begin(), ord.end(), [&](int a, int b) {return ns[a] < ns[b];});
 
-  for(int i = 1; i < n; ++i) {
-    if(sorted_a[i - 1].a == sorted_a[i].a && sorted_a[i - 1].b == sorted_a[i].b) {
-      sorted_a[i].c = sorted_a[i - 1].c + 1;
-    }
-  }
+	const int BOUND = 20000000;
+	vector<ll> ft(BOUND, 0);
+	vector<ll> res(n);
+	for(int index = 0; index < n; ++index) {
+		int i = ord[index];
+		int total = 0;
+		for(int x = ns[i].second + 1; x; x -= x & -x) {
+			total += ft[x];
+		}
+		res[i] = total;
+		for(int x = ns[i].second + 1; x < BOUND; x += x & -x) {
+			ft[x] += 1;
+		}
+	}
 
-  vector<int> sorted_b = vector<int>();
-  for(int i = 0; i < n; ++i) {
-    sorted_b.push_back(i);
-  }
-  sort(sorted_a.begin(), sorted_a.begin(), [&sorted_a] (int i1, int i2){
-      Sumo s1 = sorted_a[i1];
-      Sumo s2 = sorted_a[i2];
-      if(s1.b < s2.b){
-        return true;
-      } else if(s1.b > s2.b) {
-        return false;
-      } else {
-        if(s1.a < s2.a){
-          return true;
-      } else if(s1.a > s2.a){
-        return false;
-      } else {
-        return s1.c < s2.c;
-      }
-        //return s1.a < s2.a;
-      }
-    });
-
-  vector<int> out(n);
-  set<int> in_a;
-  for(int i = 0; i < n; ++i)
-
-
-
-
+	for(ll r : res) cout << r << endl;
 }
