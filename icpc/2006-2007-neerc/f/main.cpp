@@ -96,5 +96,6 @@ end:;
 			resb = q;
 		}
 	}
+	cout.precision(13);
 	cout << resa.x << " " << resa.y << " " << resb.x << " " << resb.y << endl;
 }
