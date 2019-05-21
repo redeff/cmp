@@ -87,13 +87,6 @@ int main() {
 		if(l != 0) res[dads[l][0]]--;
 	}
 
-	function<void(int)> dfs2 = [&](int node) {
-		for(int ch : tree[node]) {
-			dfs2(ch);
-			res[node] += res[ch];
-		}
-	};
-
 	for(int i = n-1; i >= 0; --i) {
 		int node = ord[i];
 		for(int ch : tree[node]) {
