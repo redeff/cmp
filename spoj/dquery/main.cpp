@@ -22,6 +22,8 @@ void ft_set (int a, int v){
 }
 
 int main() {
+	ios::sync_with_stdio(false);
+	cin.tie(nullptr);
 	int n;
 	cin >> n;
 	vector<int> ns(n);
@@ -74,5 +76,5 @@ int main() {
 	}
 
 	sort(qs.begin(), qs.end(), [&](Query a, Query b) {return a.i < b.i;});
-	for(Query t : qs) cout << t.res << endl;
+	for(Query t : qs) cout << t.res << "\n";
 }
