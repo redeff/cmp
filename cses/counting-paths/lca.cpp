@@ -1,6 +1,10 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+#pragma GCC optimize("Ofast")
+#pragma GCC optimize("unroll-loops")
+#pragma GCC target("sse,sse2,sse3,ssse3,sse4,popcnt,abm,mmx,avx,tune=native")
+
 int main() {
 	cin.tie(0);
 	ios::sync_with_stdio(0);
@@ -23,6 +27,7 @@ int main() {
 	vector<int> ord;
 	vector<bool> seen(n, false);
 	vector<int> bfs = {0};
+	dads[0].push_back(0);
 	while(!bfs.empty()) {
 		int t = bfs.back();
 		bfs.pop_back();
