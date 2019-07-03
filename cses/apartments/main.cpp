@@ -9,7 +9,7 @@ int main() {
 	for(int &i : ns) cin >> i;
 	sort(ns.begin(), ns.end());
 
-	vector<int> ms(n);
+	vector<int> ms(m);
 	for(int &i : ms) cin >> i;
 	sort(ms.begin(), ms.end());
 
