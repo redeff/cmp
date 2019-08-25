@@ -100,12 +100,13 @@ int main() {
 
 	vector<pair<int, int>> edges;
 	for(int i : as) edges.push_back({i, chi[i]});
-	for(int i : bs) edges.push_back({dad[i], i});
+	for(int i : bs) if(i != dad[i]) edges.push_back({dad[i], i});
 
 	vector<int> deg(n, 0);
 	for(auto i : edges) {
 		deg[i.first]++;
-		deg[i.second]++;
+		if(i.first != i.second) deg[i.second]++;
+		// deg[i.second]++;
 	}
 
 	// cerr << "---------" << endl;
@@ -114,7 +115,7 @@ int main() {
 		// cerr << i.first << " " << i.second << endl;
 		if(deg[i.first] == 1 || deg[i.second] == 1) {
 			red[i.first].push_back(i.second);
-			red[i.second].push_back(i.first);
+			if(i.first != i.second) red[i.second].push_back(i.first);
 			// cout << i.second+1 << " " << i.first+1 << endl;
 		} else {
 			deg[i.first]--;
@@ -124,7 +125,7 @@ int main() {
 
 	forn(i, n) if(!red[i].empty()) {
 		if(red[red[i][0]].size() == 1) { // deg of first child
-			for(int ch : red[i]) red[ch] = {};
+			for(int ch : red[i]) if(ch != i) red[ch] = {};
 		}
 	}
 
@@ -134,16 +135,17 @@ int main() {
 		if(!red[i].empty()) {
 			a_bunch.push_back(red[i]);
 			a_bunch.back().push_back(i);
-			// for(auto j : a_bunch.back()) cerr << j << " ";
+			// for(auto j : a_bunch.back()) cerr << j+1 << " ";
 			// cerr << endl;
 		}
 	}
+	// cerr << "--------" << endl;
 	vector<vector<int>> b_bunch;
 	for(int i : bs) {
-		if(!red[i].empty()) {
+		if(!red[i].empty() && dad[i] != i) {
 			b_bunch.push_back(red[i]);
 			b_bunch.back().push_back(i);
-			// for(auto j : b_bunch.back()) cerr << j << " ";
+			// for(auto j : b_bunch.back()) cerr << j+1 << " ";
 			// cerr << endl;
 		}
 	}
@@ -153,18 +155,25 @@ int main() {
 		total.push_back({a_bunch.back().back(), b_bunch.back().back()});
 		a_bunch.back().pop_back();
 		b_bunch.back().pop_back();
+		// cerr << "LOOP" << endl;
 
 		if(a_bunch.back().size() == 1) {
-			int t = b_bunch.back().back();
-			b_bunch.back().back() = a_bunch.back().back();
+			// int t = b_bunch.back().back();
+			// b_bunch.back().back() = a_bunch.back().back();
+			b_bunch.back().push_back(a_bunch.back().back());
 			a_bunch.pop_back();
-			b_bunch.back().push_back(t);
+			// cerr << "AAH" << endl;
+			// b_bunch.back().push_back(t);
 		}
 		else if(b_bunch.back().size() == 1) {
+			a_bunch.back().push_back(b_bunch.back().back());
+			b_bunch.pop_back();
+			/*
 			int t = a_bunch.back().back();
 			a_bunch.back().back() = b_bunch.back().back();
 			b_bunch.pop_back();
 			a_bunch.back().push_back(t);
+			*/
 		}
 		else {
 			swap(a_bunch.back().back(), b_bunch.back().back());
@@ -172,12 +181,18 @@ int main() {
 	}
 
 	forn(j, a_bunch.size()) {
-		for(int i : a_bunch[j]) if(i != a_bunch[j].back())
+		forn(index, a_bunch[j].size()-1) {
+			int i = a_bunch[j][index];
 			total.push_back({a_bunch[(j + 1) % a_bunch.size()].back(), i});
+			if(total.back().first == total.back().second) total.pop_back();
+		}
 	}
 	forn(j, b_bunch.size()) {
-		for(int i : b_bunch[j]) if(i != b_bunch[j].back())
+		forn(index, b_bunch[j].size()-1) {
+			int i = b_bunch[j][index];
 			total.push_back({i, b_bunch[(j + 1) % b_bunch.size()].back()});
+			if(total.back().first == total.back().second) total.pop_back();
+		}
 	}
 
 	cout << total.size() << endl;
